@@ -9,7 +9,7 @@ public class ApiClient {
     public static Retrofit getClient() {
         if (retrofit == null) {
             retrofit = new Retrofit.Builder()
-                    .baseUrl("http://10.92.21.167:5000/") // Replace with your server IP
+                    .baseUrl("http://172.174.1.4:5000/") // Replace with your server IP
                     .addConverterFactory(GsonConverterFactory.create())
                     .build();
         }

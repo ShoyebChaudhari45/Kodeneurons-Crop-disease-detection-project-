@@ -4,6 +4,7 @@ package com.example.cropdiseasedetection;
 import android.content.ContentUris;
 import android.content.Context;
 import android.database.Cursor;
+import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Environment;
@@ -92,4 +93,12 @@ public class FileUtils {
     private static boolean isMediaDocument(Uri uri) {
         return "com.android.providers.media.documents".equals(uri.getAuthority());
     }
+
+    public static Uri getImageUri(Context context, Bitmap bitmap) {
+        java.io.ByteArrayOutputStream bytes = new java.io.ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, bytes);
+        String path = MediaStore.Images.Media.insertImage(context.getContentResolver(), bitmap, "CapturedImage", null);
+        return Uri.parse(path);
+    }
+
 }

@@ -2,31 +2,62 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:padding="16dp">
+    android:padding="16dp"
+    android:gravity="center"
+    android:background="#FAFAFA">
 
     <ImageView
-        android:id="@+id/imageView"
+        android:id="@+id/imageVieW"
         android:layout_width="match_parent"
         android:layout_height="250dp"
         android:scaleType="centerCrop"
-        android:background="#E0E0E0"/>
+        android:background="@drawable/image_placeholder"
+        android:contentDescription="Selected Image"
+        android:layout_marginBottom="16dp" />
 
-    <Button
-        android:id="@+id/selectBtn"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Select Image"/>
+        android:orientation="horizontal"
+        android:weightSum="2"
+        android:layout_marginBottom="12dp">
+
+        <Button
+            android:id="@+id/selectBtn"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="📂 Gallery"
+            android:backgroundTint="@color/purple_500"
+            android:textColor="#FFFFFF"
+            android:layout_marginEnd="8dp" />
+
+        <Button
+            android:id="@+id/cameraBtn"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="📷 Camera"
+            android:backgroundTint="@color/teal_700"
+            android:textColor="#FFFFFF"
+            android:layout_marginStart="8dp" />
+    </LinearLayout>
 
     <Button
         android:id="@+id/uploadBtn"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Upload Image"/>
+        android:text="🚀 Upload Image"
+        android:backgroundTint="@color/green"
+        android:textColor="#FFFFFF" />
 
     <TextView
         android:id="@+id/resultText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Result will appear here"
-        android:paddingTop="20dp"/>
+        android:paddingTop="20dp"
+        android:textSize="16sp"
+        android:textColor="#333" />
+
 </LinearLayout>
