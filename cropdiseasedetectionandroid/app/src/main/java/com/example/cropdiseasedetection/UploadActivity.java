@@ -7,8 +7,12 @@ import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -18,7 +22,6 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
 import java.io.File;
-import java.io.IOException;
 
 import okhttp3.MediaType;
 import okhttp3.MultipartBody;
@@ -31,9 +34,18 @@ public class UploadActivity extends AppCompatActivity {
 
     private ImageView imageView;
     private TextView resultText;
+    private Spinner languageSpinner;
     private Uri imageUri;
+    ProgressBar progressBar;
     private static final int PICK_IMAGE = 100;
     private static final int CAPTURE_IMAGE = 101;
+
+    private String[] languages = {
+            "English (en)",
+            "Hindi (hi)",
+            "Marathi (mr)",
+            "Tamil (ta)"
+    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,6 +57,13 @@ public class UploadActivity extends AppCompatActivity {
         Button selectBtn = findViewById(R.id.selectBtn);
         Button cameraBtn = findViewById(R.id.cameraBtn);
         Button uploadBtn = findViewById(R.id.uploadBtn);
+        languageSpinner = findViewById(R.id.languageSpinner);
+        progressBar = findViewById(R.id.progressBar);
+
+        // Setup Spinner
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, languages);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        languageSpinner.setAdapter(adapter);
 
         // Select from Gallery
         selectBtn.setOnClickListener(v -> {
@@ -64,7 +83,17 @@ public class UploadActivity extends AppCompatActivity {
 
         // Upload Image
         uploadBtn.setOnClickListener(v -> {
-            if (imageUri != null) uploadImage(imageUri, "en"); // Default English
+            if (imageUri != null) {
+                String selectedItem = languageSpinner.getSelectedItem().toString();
+                String selectedLang = "en"; // default
+                if (selectedItem.contains("(hi)")) selectedLang = "hi";
+                else if (selectedItem.contains("(mr)")) selectedLang = "mr";
+                else if (selectedItem.contains("(ta)")) selectedLang = "ta";
+                progressBar.setVisibility(View.VISIBLE);
+                uploadImage(imageUri, selectedLang);
+            } else {
+                Toast.makeText(this, "Please select or capture an image first", Toast.LENGTH_SHORT).show();
+            }
         });
     }
 
@@ -101,19 +130,26 @@ public class UploadActivity extends AppCompatActivity {
         call.enqueue(new Callback<PredictionResponse>() {
             @Override
             public void onResponse(Call<PredictionResponse> call, Response<PredictionResponse> response) {
+                progressBar.setVisibility(View.GONE);
                 if (response.isSuccessful() && response.body() != null) {
                     PredictionResponse result = response.body();
                     resultText.setText("Disease: " + result.getDisease() +
                             "\nDescription: " + result.getDescription() +
                             "\nTreatment: " + result.getTreatment());
+
+                    // Fade in animation
+                    resultText.setAlpha(0f);
+                    resultText.animate().alpha(1f).setDuration(500).start();
                 } else {
                     Toast.makeText(UploadActivity.this, "Error in response", Toast.LENGTH_SHORT).show();
                 }
             }
 
+
             @Override
             public void onFailure(Call<PredictionResponse> call, Throwable t) {
                 Toast.makeText(UploadActivity.this, "Upload failed: " + t.getMessage(), Toast.LENGTH_SHORT).show();
+                progressBar.setVisibility(View.GONE);
             }
         });
     }

@@ -6,6 +6,7 @@ import torch
 import numpy as np
 import pandas as pd
 import CNN
+from deep_translator import GoogleTranslator  # Free translation
 
 # Load CSV data
 disease_info = pd.read_csv('disease_info.csv', encoding='cp1252')
@@ -30,6 +31,16 @@ def prediction(image_path):
     index = np.argmax(output)
     return index
 
+# Translation function
+def translate_text(text, target_lang):
+    try:
+        if target_lang.lower() == "en":
+            return text
+        return GoogleTranslator(source='auto', target=target_lang).translate(text)
+    except Exception as e:
+        print(f"Translation error: {e}")
+        return text
+
 # Flask app
 app = Flask(__name__)
 
@@ -39,25 +50,22 @@ def predict_api():
         return jsonify({'error': 'No image provided'}), 400
     
     image = request.files['image']
-    lang = request.form.get('lang', 'en')
+    lang = request.form.get('lang', 'en')  # en, hi, mr, ta etc.
     filename = image.filename
     file_path = os.path.join('static/uploads', filename)
     image.save(file_path)
 
     pred = prediction(file_path)
     
-    # Fetch data
+    # Fetch disease data
     disease_name = disease_info['disease_name'][pred]
     description = disease_info['description'][pred]
     steps = disease_info['Possible Steps'][pred]
 
-    # Check for language columns
-    if lang == 'hi' and 'description_hi' in disease_info.columns:
-        description = disease_info['description_hi'][pred]
-        steps = disease_info['Possible Steps_hi'][pred]
-    elif lang == 'mr' and 'description_mr' in disease_info.columns:
-        description = disease_info['description_mr'][pred]
-        steps = disease_info['Possible Steps_mr'][pred]
+    # Translate if not English
+    disease_name = translate_text(disease_name, lang)
+    description = translate_text(description, lang)
+    steps = translate_text(steps, lang)
 
     response = {
         'disease': disease_name,

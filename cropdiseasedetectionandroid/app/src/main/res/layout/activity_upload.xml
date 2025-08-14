@@ -1,63 +1,120 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:padding="16dp"
-    android:gravity="center"
-    android:background="#FAFAFA">
-
-    <ImageView
-        android:id="@+id/imageVieW"
-        android:layout_width="match_parent"
-        android:layout_height="250dp"
-        android:scaleType="centerCrop"
-        android:background="@drawable/image_placeholder"
-        android:contentDescription="Selected Image"
-        android:layout_marginBottom="16dp" />
+    android:fillViewport="true"
+    android:background="#B0F463">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:weightSum="2"
-        android:layout_marginBottom="12dp">
+        android:orientation="vertical"
+        android:padding="20dp"
+        android:gravity="center_horizontal">
 
-        <Button
-            android:id="@+id/selectBtn"
-            android:layout_width="0dp"
+        <!-- App Title -->
+        <TextView
+            android:id="@+id/appTitle"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="📂 Gallery"
-            android:backgroundTint="@color/purple_500"
-            android:textColor="#FFFFFF"
-            android:layout_marginEnd="8dp" />
+            android:gravity="center"
+            android:paddingBottom="16dp"
+            android:text="🌱 CropGuard"
+            android:textColor="@color/purple_700"
+            android:textSize="24sp"
+            android:textStyle="bold" />
 
-        <Button
-            android:id="@+id/cameraBtn"
-            android:layout_width="0dp"
+        <!-- Image Preview -->
+        <ImageView
+            android:id="@+id/imageVieW"
+            android:layout_width="match_parent"
+            android:layout_height="250dp"
+            android:scaleType="centerCrop"
+            android:background="@drawable/image_placeholder"
+            android:contentDescription="Selected Image"
+            android:layout_marginBottom="16dp"
+            android:clipToOutline="true"
+            android:elevation="4dp" />
+
+        <!-- Action Buttons -->
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="📷 Camera"
-            android:backgroundTint="@color/teal_700"
+            android:orientation="horizontal"
+            android:weightSum="2"
+            android:layout_marginBottom="12dp">
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/selectBtn"
+                style="@style/Widget.AppCompat.Button"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="📂 Gallery"
+                android:background="@drawable/rounded_purple"
+                android:backgroundTint="@null"
+                android:textColor="#FFFFFF"
+                android:textAllCaps="false"
+                android:layout_marginEnd="8dp" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/cameraBtn"
+                style="@style/Widget.AppCompat.Button"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="📷 Camera"
+                android:background="@drawable/rounded_teal"
+                android:backgroundTint="@null"
+                android:textColor="#FFFFFF"
+                android:textAllCaps="false"
+                android:layout_marginStart="8dp" />
+        </LinearLayout>
+
+        <!-- Language Selector -->
+        <Spinner
+            android:id="@+id/languageSpinner"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:entries="@array/language_array"
+            android:layout_marginBottom="16dp"
+            android:padding="10dp"
+            android:background="@drawable/result_background"
+            android:dropDownVerticalOffset="8dp" />
+
+        <!-- Upload Button -->
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/uploadBtn"
+            style="@style/Widget.AppCompat.Button"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="🚀 Upload Image"
+            android:background="@drawable/rounded_green"
+            android:backgroundTint="@null"
             android:textColor="#FFFFFF"
-            android:layout_marginStart="8dp" />
+            android:textAllCaps="false"
+            android:elevation="4dp" />
+
+        <!-- Loading ProgressBar -->
+        <ProgressBar
+            android:id="@+id/progressBar"
+            style="?android:attr/progressBarStyleLarge"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:visibility="gone" />
+
+        <!-- Result Box -->
+        <TextView
+            android:id="@+id/resultText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Result will appear here"
+            android:padding="16dp"
+            android:layout_marginTop="20dp"
+            android:textSize="16sp"
+            android:textColor="#333"
+            android:background="@drawable/result_background"
+            android:elevation="2dp"
+            android:alpha="0" />
     </LinearLayout>
-
-    <Button
-        android:id="@+id/uploadBtn"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="🚀 Upload Image"
-        android:backgroundTint="@color/green"
-        android:textColor="#FFFFFF" />
-
-    <TextView
-        android:id="@+id/resultText"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Result will appear here"
-        android:paddingTop="20dp"
-        android:textSize="16sp"
-        android:textColor="#333" />
-
-</LinearLayout>
+</ScrollView>

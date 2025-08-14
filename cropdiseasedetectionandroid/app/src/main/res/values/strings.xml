@@ -1,3 +1,10 @@
 <resources>
     <string name="app_name">crop disease detection</string>
+
+    <string-array name="language_array">
+        <item>English (en)</item>
+        <item>Hindi (hi)</item>
+        <item>Marathi (mr)</item>
+        <item>Tamil (ta)</item>
+    </string-array>
 </resources>
